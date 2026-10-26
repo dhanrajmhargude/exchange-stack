@@ -1,9 +1,9 @@
 import type { Request , Response } from "express";
-import { authschema } from "../types/auth-schema.ts";
-import { validationError } from "../utils/validation.ts";
+import { authschema } from "../types/auth-schema.js";
+import { validationError } from "../utils/validation.js";
 import bcrypt from "bcryptjs";
 import { prisma } from "../db.ts";
-import { createToken } from "../utils/auth.ts";
+import { createToken } from "../utils/auth.js";
 
 export async function signup(req : Request , res : Response): Promise<void>{
 
