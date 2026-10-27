@@ -23,10 +23,40 @@ export async function createOrder(req : Request , res : Response):Promise<void> 
 }
 
 export async function cancelOrder(req : Request , res : Response):Promise<void> {
-    
+    const parsed = cancelOrderSchema.safeParse(req.body)
+
+    if(!parsed.success){
+        validationError( res , parsed.error)
+        return;
+    }
+    try{
+        const result = await sendToEngine("cancel_order",{
+            userId :req.userId;
+            ...parsed.data
+        });
+        res.status(201).json(result);
+    }catch(err){
+        res.status(502).json({error:(err as Error).message});       
+    }
 }
 
 export async function getOrder(req : Request , res : Response):Promise<void> {
-    
+    const {id} = req.params;
+
+    if(!id){
+        res.status(400).json({error:"orderId required"});
+        return;
+    }
+
+    try {
+        const result = await sendToEngine("get_order",{
+            userId : req.userId,
+            orderId : id 
+        });
+
+        res.status(201).json(result);
+    } catch (err) {
+        res.status(502).json({error:(err as Error).message});               
+    }
 }
 
