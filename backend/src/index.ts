@@ -5,6 +5,7 @@ import { authRouter } from "./routes/auth-router.js";
 import { sendToEngine, sendResponseLoop } from "./utils/broker.js";
 import { orderRouter } from "./routes/order-routes.js";
 import { userRouter } from "./routes/user-routes.js";
+import { marketRouter } from "./routes/market-router.js";
 
 const app = express();
 const PORT  = Number(process.env.PORT) || 3000; // or 3000 if the Port is NaN Not a number
@@ -18,7 +19,7 @@ app.get("/health", (_req , res) =>{ // to check whether server is alive or not a
 app.use("/api/vi/auth", authRouter);
 app.use("/api/v1/order",orderRouter);
 app.use("/api/vi/user" ,userRouter)
-
+app.use("/api/vi/market" ,marketRouter)
 
 app.get("/db-check" , async (_req , res) => {
     const count = await prisma.user.count();
